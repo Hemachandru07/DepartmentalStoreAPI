@@ -1,29 +1,27 @@
 ﻿using DepartmentalStore.Models;
 using DepartmentalStore.Repository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DepartmentalStore.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class FruitsController : ControllerBase
+    public class OrderDetailsController : ControllerBase
     {
         private readonly IDepartmentRepo repo;
 
-        public FruitsController(IDepartmentRepo _repo)
+        public OrderDetailsController(IDepartmentRepo _repo)
         {
             repo = _repo;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Fruits>>> GetAllFruits()
+        public async Task<ActionResult<IEnumerable<OrderDetail>>> GetAllOrderDetail()
         {
             try
             {
-                return (await repo.GetAllFruits()).ToList();
+                return (await repo.GetAllOrderDetail()).ToList();
             }
             catch (Exception)
             {
@@ -33,11 +31,11 @@ namespace DepartmentalStore.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Fruits>> GetFruitsById(int id)
+        public async Task<ActionResult<OrderDetail>> GetOrderDetailById(int id)
         {
             try
             {
-                var result = await repo.GetFruitsById(id);
+                var result = await repo.GetOrderDetailById(id);
 
                 if (result == null) return NotFound();
 
@@ -51,35 +49,35 @@ namespace DepartmentalStore.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Fruits>> AddFruits(Fruits fruits)
+        public async Task<ActionResult<OrderDetail>> AddOrderDetail(OrderDetail orderdetail)
         {
             try
             {
-                if (fruits == null)
+                if (orderdetail == null)
                     return BadRequest();
 
-                var createdFruits = await repo.AddFruits(fruits);
+                var createdOrderDetail = await repo.AddOrderDetail(orderdetail);
 
-                return CreatedAtAction(nameof(GetAllFruits),
-                    new { id = createdFruits.FruitId }, createdFruits);
+                return CreatedAtAction(nameof(GetAllOrderDetail),
+                    new { id = createdOrderDetail.OrderDetailID }, createdOrderDetail);
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating new Fruit record");
+                    "Error creating new OrderDetail record");
             }
         }
 
         [HttpPut]
-        public async Task<ActionResult<Fruits>> UpdateFruits(int id, Fruits fruits)
+        public async Task<ActionResult<OrderDetail>> UpdateOrderDetail(int id, OrderDetail orderdetail)
         {
             try
             {
-                if (id != fruits.FruitId)
-                    return BadRequest("Fruit ID mismatch");
+                if (id != orderdetail.OrderDetailID)
+                    return BadRequest("OrderDetail ID mismatch");
 
-               var update = await repo.UpdateFruits(fruits);
-               return Ok(update);
+                var update = await repo.UpdateOrderDetail(orderdetail);
+                return Ok(update);
             }
             catch (Exception)
             {
@@ -89,18 +87,18 @@ namespace DepartmentalStore.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<Fruits>> DeleteFruits(int id)
+        public async Task<ActionResult<OrderDetail>> DeleteOrderDetail(int id)
         {
             try
             {
-                var fruitToDelete = await repo.GetFruitsById(id);
+                var OrderDetailToDelete = await repo.GetOrderDetailById(id);
 
-                if (fruitToDelete == null)
+                if (OrderDetailToDelete == null)
                 {
-                    return NotFound($"Fruit with Id = {id} not found");
+                    return NotFound($"OrderDetail with Id = {id} not found");
                 }
 
-                return await repo.DeleteFruits(id);
+                return await repo.DeleteOrderDetail(id);
             }
             catch (Exception)
             {

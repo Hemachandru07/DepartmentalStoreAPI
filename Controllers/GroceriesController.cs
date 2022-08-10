@@ -64,7 +64,7 @@ namespace DepartmentalStore.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating new employee record");
+                    "Error creating new Grocery record");
             }
         }
 
@@ -74,7 +74,7 @@ namespace DepartmentalStore.Controllers
             try
             {
                 if (id != groceries.GroceryId)
-                    return BadRequest("Employee ID mismatch");
+                    return BadRequest("Grocery ID mismatch");
 
                 var update = await repo.UpdateGroceries(groceries);
                 return Ok(update);

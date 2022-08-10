@@ -34,7 +34,7 @@ namespace DepartmentalStore.Models
 
         [Required(ErrorMessage = "*")]
         [NotMapped]
-        [Compare("PassWord", ErrorMessage = "Password Not Matching")]
+        [Compare("Password", ErrorMessage = "Password Not Matching")]
         [Display(Name = "Confirm Password")]
         public string? ConfirmPassword { get; set; }
         public List<OrderDetail>? orderdetails { get; set; }

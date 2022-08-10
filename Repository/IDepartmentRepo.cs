@@ -1,4 +1,5 @@
 ﻿using DepartmentalStore.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DepartmentalStore.Repository
 {
@@ -21,7 +22,7 @@ namespace DepartmentalStore.Repository
         #endregion
 
         #region Beverages 
-        public Task<List<Beverages>> GetAllBeverages();
+        public Task<IEnumerable<Beverages>> GetAllBeverages();
         public Task<Beverages> GetBeveragesById(int id);
         public Task<Beverages> AddBeverages(Beverages beverages);
         public Task<Beverages> UpdateBeverages(Beverages beverages);
@@ -29,7 +30,7 @@ namespace DepartmentalStore.Repository
         #endregion
 
         #region Vegetables 
-        public Task<List<Vegetables>> GetAllVegetables();
+        public Task<IEnumerable<Vegetables>> GetAllVegetables();
         public Task<Vegetables> GetVegetablesById(int id);
         public Task<Vegetables> AddVegetables(Vegetables vegetables);
         public Task<Vegetables> UpdateVegetables(Vegetables vegetables);
@@ -37,11 +38,20 @@ namespace DepartmentalStore.Repository
         #endregion
 
         #region Customer
-        public Task<List<Customer>> GetAllCustomer();
+        public Task<IEnumerable<Customer>> GetAllCustomer();
         public Task<Customer> GetCustomerById(int id);
         public Task<Customer> AddCustomer(Customer customer);
         public Task<Customer> UpdateCustomer(Customer customer);
         public Task<Customer> DeleteCustomer(int id);
+        public Task<string> Login(Customer customer);
+        #endregion
+
+        #region OrderDetails
+        public Task<IEnumerable<OrderDetail>> GetAllOrderDetail();
+        public Task<OrderDetail> GetOrderDetailById(int id);
+        public Task<OrderDetail> AddOrderDetail(OrderDetail orderdetails);
+        public Task<OrderDetail> UpdateOrderDetail(OrderDetail orderdetails);
+        public Task<OrderDetail> DeleteOrderDetail(int id);
         #endregion
 
 

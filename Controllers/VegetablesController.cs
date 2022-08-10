@@ -1,29 +1,26 @@
 ﻿using DepartmentalStore.Models;
 using DepartmentalStore.Repository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DepartmentalStore.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class FruitsController : ControllerBase
+    public class VegetablesController : ControllerBase
     {
         private readonly IDepartmentRepo repo;
 
-        public FruitsController(IDepartmentRepo _repo)
+        public VegetablesController(IDepartmentRepo _repo)
         {
             repo = _repo;
         }
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Fruits>>> GetAllFruits()
+        public async Task<ActionResult<IEnumerable<Vegetables>>> GetAllVegetables()
         {
             try
             {
-                return (await repo.GetAllFruits()).ToList();
+                return (await repo.GetAllVegetables()).ToList();
             }
             catch (Exception)
             {
@@ -33,11 +30,11 @@ namespace DepartmentalStore.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Fruits>> GetFruitsById(int id)
+        public async Task<ActionResult<Vegetables>> GetVegetablesById(int id)
         {
             try
             {
-                var result = await repo.GetFruitsById(id);
+                var result = await repo.GetVegetablesById(id);
 
                 if (result == null) return NotFound();
 
@@ -51,35 +48,35 @@ namespace DepartmentalStore.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Fruits>> AddFruits(Fruits fruits)
+        public async Task<ActionResult<Vegetables>> AddVegetables(Vegetables vegetables)
         {
             try
             {
-                if (fruits == null)
+                if (vegetables == null)
                     return BadRequest();
 
-                var createdFruits = await repo.AddFruits(fruits);
+                var createdVegetables = await repo.AddVegetables(vegetables);
 
-                return CreatedAtAction(nameof(GetAllFruits),
-                    new { id = createdFruits.FruitId }, createdFruits);
+                return CreatedAtAction(nameof(GetAllVegetables),
+                    new { id = createdVegetables.VegetableId }, createdVegetables);
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating new Fruit record");
+                    "Error creating new Vegetable record");
             }
         }
 
         [HttpPut]
-        public async Task<ActionResult<Fruits>> UpdateFruits(int id, Fruits fruits)
+        public async Task<ActionResult<Vegetables>> UpdateVegetables(int id, Vegetables vegetables)
         {
             try
             {
-                if (id != fruits.FruitId)
-                    return BadRequest("Fruit ID mismatch");
+                if (id != vegetables.VegetableId)
+                    return BadRequest("Vegetable ID mismatch");
 
-               var update = await repo.UpdateFruits(fruits);
-               return Ok(update);
+                var update = await repo.UpdateVegetables(vegetables);
+                return Ok(update);
             }
             catch (Exception)
             {
@@ -89,18 +86,18 @@ namespace DepartmentalStore.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<Fruits>> DeleteFruits(int id)
+        public async Task<ActionResult<Vegetables>> DeleteVegetables(int id)
         {
             try
             {
-                var fruitToDelete = await repo.GetFruitsById(id);
+                var VegetableToDelete = await repo.GetVegetablesById(id);
 
-                if (fruitToDelete == null)
+                if (VegetableToDelete == null)
                 {
-                    return NotFound($"Fruit with Id = {id} not found");
+                    return NotFound($"Vegetable with Id = {id} not found");
                 }
 
-                return await repo.DeleteFruits(id);
+                return await repo.DeleteVegetables(id);
             }
             catch (Exception)
             {
