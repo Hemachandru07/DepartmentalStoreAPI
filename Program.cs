@@ -2,8 +2,10 @@ using DepartmentalStore.Data;
 using DepartmentalStore.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,7 +45,18 @@ builder.Services.AddDbContext<DepartmentalStoreDBContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    option.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Department API",
+        Description = "It is an Demo API Application",
+        
+        Contact = new OpenApiContact
+        {
+            Name = "Example Contact",
+            Url = new Uri("https://whiteblue.in/")
+        }
+    });
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -67,6 +80,9 @@ builder.Services.AddSwaggerGen(option =>
             new string[]{}
         }
     });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    option.IncludeXmlComments(xmlPath);
 });
 builder.Services.AddScoped<IDepartmentRepo, DepartmentRepo>();
 
@@ -76,13 +92,17 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.InjectStylesheet("/CSS/theme-outline.css");
+    });
 }
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStaticFiles();
+    
 app.MapControllers();
 
 app.Run();

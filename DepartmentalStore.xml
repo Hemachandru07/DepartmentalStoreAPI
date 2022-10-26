@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DepartmentalStore</name>
+    </assembly>
+    <members>
+        <member name="M:DepartmentalStore.Controllers.BeveragesController.GetAllBeverages">
+            <summary>
+             Gets all Beverages list
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:DepartmentalStore.Controllers.BeveragesController.AddBeverages(DepartmentalStore.Models.Beverages)" -->
+    </members>
+</doc>

@@ -2,6 +2,7 @@
 using DepartmentalStore.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Web.Http.Description;
 
 namespace DepartmentalStore.Controllers
 {
@@ -15,6 +16,11 @@ namespace DepartmentalStore.Controllers
         {
             repo = _repo;
         }
+        ///<summary>
+        /// Gets all Beverages list
+        ///</summary>
+        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Beverages>>> GetAllBeverages()
         {
@@ -46,13 +52,34 @@ namespace DepartmentalStore.Controllers
                     "Error retrieving data from the database");
             }
         }
-
+        /// <summary>
+        /// Add Beverages.
+        /// </summary>
+        /// <param name="beverages"></param>
+        /// <returns>A newly created TodoItem</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Beverage
+        ///     {
+        ///     "beverageName": "string",
+        ///     "beveragePrice": float,
+        ///     "beverageQty": int
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Returns the newly created beverage/response>
+        /// <response code="400">If the beverage is null</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ResponseType(typeof(Beverages))]
+        
         public async Task<ActionResult<Beverages>> AddBeverages(Beverages beverages)
         {
             try
             {
-                if (beverages == null)
+                if (beverages == null)  
                     return BadRequest();
 
                 var createdBeverages = await repo.AddBeverages(beverages);
